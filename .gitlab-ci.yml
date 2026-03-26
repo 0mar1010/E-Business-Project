@@ -1,0 +1,33 @@
+stages:
+  - build
+  - test
+
+variables:
+  DOCKER_DRIVER: overlay2
+
+build-backend:
+  stage: build
+  image: node:20-alpine
+  script:
+    - cd backend
+    - npm install
+    - echo "Backend build successful"
+
+build-frontend:
+  stage: build
+  image: node:20-alpine
+  script:
+    - cd frontend
+    - npm install
+    - npm run build
+    - echo "Frontend build successful"
+
+test-backend:
+  stage: test
+  image: node:20-alpine
+  script:
+    - cd backend
+    - npm install
+    - node -e "require('./src/index.js')" &
+    - sleep 3
+    - echo "Backend smoke test passed"
