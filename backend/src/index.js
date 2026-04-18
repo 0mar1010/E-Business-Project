@@ -18,7 +18,7 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/auth', authRoutes);
 
 app.get('/', (req, res) => {
-    res.json({ message: 'Gym Store API is running' });
+    res.json({ message: 'Beroo Nursery API is running' });
 });
 
 mongoose
