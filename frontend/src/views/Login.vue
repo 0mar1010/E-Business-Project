@@ -33,6 +33,7 @@ const login = async () => {
     })
     localStorage.setItem('token', res.data.token)
     localStorage.setItem('role', res.data.role)
+    window.location.href = '/admin'
     if (res.data.role === 'admin') {
       router.push('/admin')
     } else {

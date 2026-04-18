@@ -50,16 +50,16 @@
 </template>
 
 <script setup>
-import berooLogo from './assets/Beroo\'s Logo.jpg'
-import { ref, computed, onMounted } from 'vue'
+import berooLogo from './assets/beroo-logo.jpg'
+import { ref, onMounted } from 'vue'
 import { useCartStore } from './stores/cart'
 import { useRouter } from 'vue-router'
 
 const cart = useCartStore()
 const router = useRouter()
 
-const isLoggedIn = computed(() => !!localStorage.getItem('token'))
-const isAdmin = computed(() => localStorage.getItem('role') === 'admin')
+const isLoggedIn = ref(!!localStorage.getItem('token'))
+const isAdmin = ref(localStorage.getItem('role') === 'admin')
 
 const themes = ['dark', 'light', 'gray']
 const theme = ref('dark')
@@ -78,6 +78,8 @@ onMounted(() => {
 const logout = () => {
   localStorage.removeItem('token')
   localStorage.removeItem('role')
+  isLoggedIn.value = false
+  isAdmin.value = false
   router.push('/')
 }
 </script>
@@ -85,9 +87,24 @@ const logout = () => {
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; transition: background 0.3s, color 0.3s; }
-body.dark { --bg: #111; --bg2: #1a1a1a; --bg3: #222; --text: #fff; --text2: #aaa; --border: #333; --accent: #e63946; --accent-hover: #c1121f; }
-body.light { --bg: #f5f5f5; --bg2: #fff; --bg3: #eee; --text: #111; --text2: #555; --border: #ddd; --accent: #e63946; --accent-hover: #c1121f; }
-body.gray { --bg: #2b2b2b; --bg2: #3a3a3a; --bg3: #444; --text: #e0e0e0; --text2: #aaa; --border: #555; --accent: #e63946; --accent-hover: #c1121f; }
+body.dark {
+  --bg: #1a1025; --bg2: #2a1f35; --bg3: #3a2d4a;
+  --text: #fff; --text2: #ccc; --border: #4a3d5a;
+  --accent: #f4a020; --accent-hover: #e08800;
+  --accent2: #3ab4f2; --accent3: #e84393;
+}
+body.light {
+  --bg: #fffdf6; --bg2: #ffffff; --bg3: #fff3e0;
+  --text: #2d2d2d; --text2: #666; --border: #ffe0b2;
+  --accent: #f4a020; --accent-hover: #e08800;
+  --accent2: #3ab4f2; --accent3: #e84393;
+}
+body.gray {
+  --bg: #f0f0f0; --bg2: #fafafa; --bg3: #e8e8e8;
+  --text: #333; --text2: #777; --border: #ddd;
+  --accent: #f4a020; --accent-hover: #e08800;
+  --accent2: #3ab4f2; --accent3: #e84393;
+}
 nav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: var(--bg2); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
 .brand { color: var(--accent); font-size: 1.3rem; font-weight: bold; text-decoration: none; }
 .nav-links { display: flex; align-items: center; gap: 1rem; }
