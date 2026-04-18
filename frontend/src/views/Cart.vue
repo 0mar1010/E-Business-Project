@@ -20,16 +20,15 @@
       </div>
 
       <div class="summary">
-        <h3>Total: {{ cart.totalPrice }} EGP</h3>
+        <h3>👶 Parent / Guardian Details</h3>
       </div>
 
       <!-- Checkout Form -->
       <div class="checkout-form">
         <h3>📦 Delivery Details</h3>
-        <input v-model="form.customerName" type="text" placeholder="Full Name" />
-        <input v-model="form.customerEmail" type="email" placeholder="Email Address" />
-        <input v-model="form.customerPhone" type="tel" placeholder="Phone Number" />
-
+          <input v-model="form.customerName" type="text" placeholder="Parent / Guardian Full Name" />
+          <input v-model="form.customerEmail" type="email" placeholder="Email Address" />
+          <input v-model="form.customerPhone" type="tel" placeholder="Phone Number" />
         <button
           class="checkout-btn"
           @click="placeOrder"
@@ -82,7 +81,7 @@ const placeOrder = async () => {
       totalPrice: cart.totalPrice,
     })
 
-    successMsg.value = '✅ Order placed successfully! We will contact you soon.'
+    successMsg.value = '✅ Enrollment request submitted! Beroo Nursery will contact you shortly.'
     cart.clearCart()
     form.value = { customerName: '', customerEmail: '', customerPhone: '' }
   } catch (err) {

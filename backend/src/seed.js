@@ -4,60 +4,60 @@ require('dotenv').config();
 
 const products = [
     {
-        name: 'Whey Protein 2kg',
-        description: 'Premium chocolate whey protein. 24g protein per serving.',
-        price: 350,
-        category: 'supplements',
-        stock: 100,
-        image: 'https://placehold.co/400x400?text=Whey+Protein',
-    },
-    {
-        name: 'Creatine Monohydrate',
-        description: 'Pure creatine monohydrate for strength and power.',
-        price: 120,
-        category: 'supplements',
-        stock: 80,
-        image: 'https://placehold.co/400x400?text=Creatine',
-    },
-    {
-        name: 'Adjustable Dumbbell Set',
-        description: '5-50kg adjustable dumbbells. Space-saving design.',
-        price: 1200,
-        category: 'equipment',
+        name: 'Full Year Enrollment',
+        description: 'Complete academic year enrollment for your child at Beroo Nursery. Includes all core activities and daily care.',
+        price: 12000,
+        category: 'enrollment',
         stock: 20,
-        image: 'https://placehold.co/400x400?text=Dumbbells',
+        image: 'https://placehold.co/400x400?text=Enrollment',
     },
     {
-        name: 'Resistance Bands Set',
-        description: 'Set of 5 resistance bands. Light to extra heavy.',
-        price: 85,
-        category: 'equipment',
-        stock: 60,
-        image: 'https://placehold.co/400x400?text=Bands',
+        name: 'Half Year Enrollment',
+        description: 'Six-month enrollment plan. Ideal for children joining mid-year.',
+        price: 7000,
+        category: 'enrollment',
+        stock: 15,
+        image: 'https://placehold.co/400x400?text=Half+Year',
     },
     {
-        name: 'Gym Gloves',
-        description: 'Anti-slip gym gloves with wrist support.',
-        price: 65,
-        category: 'accessories',
-        stock: 90,
-        image: 'https://placehold.co/400x400?text=Gloves',
+        name: 'English Language Program',
+        description: 'Dedicated English language sessions using modern playful teaching methods.',
+        price: 1500,
+        category: 'languages',
+        stock: 999,
+        image: 'https://placehold.co/400x400?text=English',
     },
     {
-        name: 'Dry-Fit T-Shirt',
-        description: 'Breathable dry-fit training shirt. Available in all sizes.',
-        price: 95,
-        category: 'apparel',
-        stock: 120,
-        image: 'https://placehold.co/400x400?text=T-Shirt',
+        name: 'German Language Program',
+        description: 'Introductory German language classes designed for young children.',
+        price: 1500,
+        category: 'languages',
+        stock: 999,
+        image: 'https://placehold.co/400x400?text=German',
+    },
+    {
+        name: 'French Language Program',
+        description: 'Fun and creative French language sessions for kids aged 2–6.',
+        price: 1500,
+        category: 'languages',
+        stock: 999,
+        image: 'https://placehold.co/400x400?text=French',
+    },
+    {
+        name: 'Arts & Creative Activities Pack',
+        description: 'Monthly subscription for arts, crafts, music, and movement sessions.',
+        price: 800,
+        category: 'activities',
+        stock: 30,
+        image: 'https://placehold.co/400x400?text=Activities',
     },
 ];
 
 mongoose.connect(process.env.MONGO_URI).then(async () => {
-    console.log('Connected — seeding products...');
+    console.log('Connected — seeding Beroo Nursery data...');
     await Product.deleteMany({});
     await Product.insertMany(products);
-    console.log('Seeded 6 products successfully');
+    console.log('Seeded 6 items successfully');
     process.exit(0);
 }).catch(err => {
     console.error(err);
