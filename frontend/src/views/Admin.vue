@@ -26,9 +26,13 @@
     <div v-else class="orders-list">
       <div class="order-card" v-for="order in orders" :key="order._id">
         <div class="order-top">
-          <div>
-            <span class="order-id">#{{ order._id.slice(-6).toUpperCase() }}</span>
-            <span :class="['status', order.status]">{{ order.status }}</span>
+          <div class="order-status-row">
+          <span :class="['status-badge', order.status]">{{ order.status }}</span>
+          <select :value="order.status" @change="updateStatus(order._id, $event.target.value)" class="status-select">
+            <option value="pending">Pending</option>
+            <option value="confirmed">Confirmed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
           </div>
           <span class="order-date">{{ formatDate(order.createdAt) }}</span>
         </div>
@@ -73,8 +77,21 @@ onMounted(async () => {
   if (!token) { router.push('/login'); return }
   try {
     const res = await axios.get('http://localhost:5000/api/orders', {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` } 
     })
+    const updateStatus = async (orderId, newStatus) => {
+  try {
+    const token = localStorage.getItem('token')
+    await axios.patch(`${import.meta.env.VITE_API_URL}/api/orders/${orderId}/status`,
+      { status: newStatus },
+      { headers: { Authorization: `Bearer ${token}` } }
+    )
+    const order = orders.value.find(o => o._id === orderId)
+    if (order) order.status = newStatus
+  } catch (err) {
+    alert('Failed to update status')
+  }
+}
     orders.value = res.data
   } catch {
     router.push('/login')
@@ -157,4 +174,10 @@ h3 { color: #fff; margin-bottom: 1rem; }
 .order-items { margin: 0.75rem 0; border-top: 1px solid #333; padding-top: 0.75rem; }
 .order-item { color: #aaa; font-size: 0.9rem; margin: 2px 0; }
 .order-total { color: #e63946; font-weight: bold; text-align: right; }
+.order-status-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+.status-badge { padding: 3px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; text-transform: capitalize; }
+.status-badge.pending { background: #fff3cd; color: #856404; }
+.status-badge.confirmed { background: #d1e7dd; color: #0a3622; }
+.status-badge.cancelled { background: #f8d7da; color: #842029; }
+.status-select { background: var(--bg2); color: var(--text); border: 1px solid var(--border); padding: 4px 8px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; }
 </style>
