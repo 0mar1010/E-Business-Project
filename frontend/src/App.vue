@@ -61,7 +61,7 @@ const router = useRouter()
 const isLoggedIn = ref(!!localStorage.getItem('token'))
 const isAdmin = ref(localStorage.getItem('role') === 'admin')
 
-const themes = ['dark', 'light', 'gray']
+const themes = ['gray', 'dark', 'light']
 const theme = ref('dark')
 
 const setTheme = (t) => {
@@ -94,14 +94,14 @@ body.dark {
   --accent2: #3ab4f2; --accent3: #e84393;
 }
 body.light {
-  --bg: #fffdf6; --bg2: #ffffff; --bg3: #fff3e0;
-  --text: #2d2d2d; --text2: #666; --border: #ffe0b2;
+  --bg: #fdf6ec; --bg2: #fff8f0; --bg3: #fdebd0;
+  --text: #2d1f0e; --text2: #7a5c3a; --border: #f0c080;
   --accent: #f4a020; --accent-hover: #e08800;
   --accent2: #3ab4f2; --accent3: #e84393;
 }
 body.gray {
-  --bg: #f0f0f0; --bg2: #fafafa; --bg3: #e8e8e8;
-  --text: #333; --text2: #777; --border: #ddd;
+  --bg: #3a3a3a; --bg2: #484848; --bg3: #555;
+  --text: #f0f0f0; --text2: #bbb; --border: #666;
   --accent: #f4a020; --accent-hover: #e08800;
   --accent2: #3ab4f2; --accent3: #e84393;
 }
