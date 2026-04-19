@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: beroo-backend
+  labels:
+    app: beroo-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: beroo-backend
+  template:
+    metadata:
+      labels:
+        app: beroo-backend
+    spec:
+      containers:
+        - name: backend
+          image: gcr.io/gym-store-egypt/gym-backend:latest
+          ports:
+            - containerPort: 5000
+          env:
+            - name: PORT
+              value: "5000"
+            - name: MONGO_URI
+              valueFrom:
+                secretKeyRef:
+                  name: beroo-secrets
+                  key: MONGO_URI
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: beroo-secrets
+                  key: JWT_SECRET
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: beroo-backend-service
+spec:
+  selector:
+    app: beroo-backend
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+  type: ClusterIP

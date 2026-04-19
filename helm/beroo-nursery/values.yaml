@@ -1,0 +1,14 @@
+backend:
+  image: gcr.io/gym-store-egypt/gym-backend:latest
+  replicas: 1
+  port: 5000
+
+frontend:
+  image: gcr.io/gym-store-egypt/gym-frontend:latest
+  replicas: 1
+  port: 80
+  nodePort: 30080
+
+secrets:
+  mongoUri: ""
+  jwtSecret: ""

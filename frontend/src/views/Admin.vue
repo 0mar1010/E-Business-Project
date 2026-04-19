@@ -27,12 +27,12 @@
       <div class="order-card" v-for="order in orders" :key="order._id">
         <div class="order-top">
           <div class="order-status-row">
-          <span :class="['status-badge', order.status]">{{ order.status }}</span>
-          <select :value="order.status" @change="updateStatus(order._id, $event.target.value)" class="status-select">
-            <option value="pending">Pending</option>
-            <option value="confirmed">Confirmed</option>
-            <option value="cancelled">Cancelled</option>
-          </select>
+            <span :class="['status-badge', order.status]">{{ order.status }}</span>
+            <select :value="order.status" @change="updateStatus(order._id, $event.target.value)" class="status-select">
+              <option value="pending">Pending</option>
+              <option value="confirmed">Confirmed</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
           </div>
           <span class="order-date">{{ formatDate(order.createdAt) }}</span>
         </div>
@@ -72,14 +72,7 @@ const formatDate = (d) => new Date(d).toLocaleDateString('en-GB', {
   day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
 })
 
-onMounted(async () => {
-  const token = localStorage.getItem('token')
-  if (!token) { router.push('/login'); return }
-  try {
-    const res = await axios.get('http://localhost:5000/api/orders', {
-      headers: { Authorization: `Bearer ${token}` } 
-    })
-    const updateStatus = async (orderId, newStatus) => {
+const updateStatus = async (orderId, newStatus) => {
   try {
     const token = localStorage.getItem('token')
     await axios.patch(`${import.meta.env.VITE_API_URL}/api/orders/${orderId}/status`,
@@ -92,6 +85,14 @@ onMounted(async () => {
     alert('Failed to update status')
   }
 }
+
+onMounted(async () => {
+  const token = localStorage.getItem('token')
+  if (!token) { router.push('/login'); return }
+  try {
+    const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/orders`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
     orders.value = res.data
   } catch {
     router.push('/login')
@@ -109,75 +110,28 @@ const logout = () => {
 
 <style scoped>
 .admin { max-width: 900px; margin: 0 auto; }
-.admin-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-}
-.admin-header h2 { color: #fff; margin: 0; }
-.logout-btn {
-  background: transparent;
-  border: 1px solid #e63946;
-  color: #e63946;
-  padding: 8px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-.logout-btn:hover { background: #e63946; color: white; }
-.stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-.stat-card {
-  background: #1a1a1a;
-  border: 1px solid #333;
-  border-radius: 12px;
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-}
-.stat-num { font-size: 1.8rem; font-weight: bold; color: #e63946; }
-.stat-label { color: #aaa; font-size: 0.9rem; }
-h3 { color: #fff; margin-bottom: 1rem; }
-.loading, .empty { color: #aaa; text-align: center; padding: 2rem; }
+.admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+.admin-header h2 { color: var(--text); margin: 0; }
+.logout-btn { background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 8px 16px; border-radius: 8px; cursor: pointer; }
+.logout-btn:hover { background: var(--accent); color: white; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem; }
+.stat-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+.stat-num { font-size: 1.8rem; font-weight: bold; color: var(--accent); }
+.stat-label { color: var(--text2); font-size: 0.9rem; }
+h3 { color: var(--text); margin-bottom: 1rem; }
+.loading, .empty { color: var(--text2); text-align: center; padding: 2rem; }
 .orders-list { display: flex; flex-direction: column; gap: 1rem; }
-.order-card {
-  background: #1a1a1a;
-  border: 1px solid #333;
-  border-radius: 12px;
-  padding: 1.25rem;
-}
-.order-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.75rem;
-}
-.order-id { color: #fff; font-weight: bold; margin-right: 0.5rem; }
-.status {
-  padding: 2px 10px;
-  border-radius: 20px;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-}
-.status.pending { background: #ff9800; color: #000; }
-.status.confirmed { background: #2196f3; color: #fff; }
-.status.shipped { background: #9c27b0; color: #fff; }
-.status.delivered { background: #4caf50; color: #fff; }
-.order-date { color: #aaa; font-size: 0.85rem; }
-.order-customer p { color: #ccc; margin: 2px 0; font-size: 0.9rem; }
-.order-items { margin: 0.75rem 0; border-top: 1px solid #333; padding-top: 0.75rem; }
-.order-item { color: #aaa; font-size: 0.9rem; margin: 2px 0; }
-.order-total { color: #e63946; font-weight: bold; text-align: right; }
-.order-status-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+.order-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; }
+.order-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+.order-status-row { display: flex; align-items: center; gap: 0.75rem; }
 .status-badge { padding: 3px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; text-transform: capitalize; }
 .status-badge.pending { background: #fff3cd; color: #856404; }
 .status-badge.confirmed { background: #d1e7dd; color: #0a3622; }
 .status-badge.cancelled { background: #f8d7da; color: #842029; }
 .status-select { background: var(--bg2); color: var(--text); border: 1px solid var(--border); padding: 4px 8px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; }
+.order-date { color: var(--text2); font-size: 0.85rem; }
+.order-customer p { color: var(--text2); margin: 2px 0; font-size: 0.9rem; }
+.order-items { margin: 0.75rem 0; border-top: 1px solid var(--border); padding-top: 0.75rem; }
+.order-item { color: var(--text2); font-size: 0.9rem; margin: 2px 0; }
+.order-total { color: var(--accent); font-weight: bold; text-align: right; }
 </style>
