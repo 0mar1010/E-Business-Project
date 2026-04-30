@@ -12,6 +12,7 @@
         </router-link>
         <router-link v-if="isAdmin" to="/admin" class="admin-link">🛠️ Admin</router-link>
         <router-link v-if="!isLoggedIn" to="/login" class="login-link">Login</router-link>
+        <router-link v-if="!isLoggedIn" to="/signup" class="nav-link">Sign Up</router-link>
         <button v-if="isLoggedIn" @click="logout" class="logout-btn">Logout</button>
         <div class="theme-toggle">
           <button v-for="t in themes" :key="t" :class="['theme-btn', { active: theme === t }]" @click="setTheme(t)">{{ t }}</button>

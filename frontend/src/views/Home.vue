@@ -7,7 +7,14 @@
         <router-link to="/cart" class="hero-btn">Enroll Now →</router-link>
       </div>
     </section>
-
+        <!-- Search -->
+  <div class="search-bar">
+    <input
+      v-model="searchQuery"
+      type="text"
+      placeholder="🔍 Search products..."
+    />
+  </div>
     <section class="filters">
       <button
         v-for="cat in categoryNames"
@@ -38,22 +45,65 @@ import ProductCard from '../components/ProductCard.vue'
 const products = ref([])
 const loading = ref(true)
 const selected = ref('All')
-const categoryNames = ['All', 'enrollment', 'languages', 'activities', 'supplies']
+const searchQuery = ref('')
 
-const filteredProducts = computed(() =>
-  selected.value === 'All'
-    ? products.value
-    : products.value.filter((p) => p.category === selected.value)
+const categoryNames = ['All', 'supplements', 'equipment', 'apparel', 'accessories']
+
+const categories = computed(() =>
+  categoryNames.map((name) => ({
+    name,
+    count: name === 'All'
+      ? products.value.length
+      : products.value.filter((p) => p.category === name).length,
+  }))
 )
 
+const filteredProducts = computed(() => {
+  let result = [...products.value]
+
+  if (selected.value !== 'All') {
+    result = result.filter((p) => p.category === selected.value)
+  }
+
+  if (searchQuery.value.trim()) {
+    const q = searchQuery.value.toLowerCase().trim()
+    result = result.filter(
+      (p) =>
+        p.name.toLowerCase().includes(q) ||
+        p.description.toLowerCase().includes(q)
+    )
+  }
+
+  return result
+})
+
 onMounted(async () => {
-  const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/products`)
-  products.value = res.data
-  loading.value = false
+  try {
+    const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/products`)
+    products.value = res.data
+  } catch (err) {
+    console.error('Failed to load products:', err)
+  } finally {
+    loading.value = false
+  }
 })
 </script>
 
 <style scoped>
+.search-bar {
+  margin-bottom: 1.5rem;
+}
+.search-bar input {
+  width: 100%;
+  padding: 12px 20px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 1rem;
+  outline: none;
+}
+.search-bar input:focus { border-color: var(--accent); }
 .hero {
   border-radius: 24px;
   margin-bottom: 2rem;

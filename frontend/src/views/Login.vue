@@ -8,6 +8,7 @@
         {{ loading ? 'Logging in...' : 'Login' }}
       </button>
       <p v-if="error" class="error">{{ error }}</p>
+      <p class="switch">Don't have an account? <router-link to="/signup">Sign Up</router-link></p>
     </div>
   </div>
 </template>
@@ -48,6 +49,8 @@ const login = async () => {
 </script>
 
 <style scoped>
+.switch { color: var(--text2); text-align: center; font-size: 0.9rem; }
+.switch a { color: var(--accent); }
 .login-wrapper {
   display: flex;
   justify-content: center;
